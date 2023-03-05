@@ -1,0 +1,183 @@
+{
+	"info": {
+		"_postman_id": "a2ddea17-0fea-4aad-9d14-5b1a0419ecb0",
+		"name": "week2.day1-Assignement-CR",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26039085"
+	},
+	"item": [
+		{
+			"name": "Create Change Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code for Create Change Request is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Change Request Prefix\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"CHG\");\r",
+							"});\r",
+							"\r",
+							"var response = pm.response.json();\r",
+							"var sys_id=response.result.sys_id\r",
+							"var CRnumber=response.result.number\r",
+							"console.log(CRnumber, sys_id);\r",
+							"pm.globals.set(\"systemID\", sys_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"short_description\": \"Change Request created from Postman\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/api/now/table/change_request",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"change_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateChangeReq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"Change Request updated\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/api/now/table/{{CRName}}/{{systemID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{CRName}}",
+						"{{systemID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Change Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code for Delete Change Request using sys_id is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}/api/now/table/{{CRName}}/{{systemID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{CRName}}",
+						"{{systemID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "D$hc1jKeO@P7",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Response time is less than 2000ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "CRName",
+			"value": "change_request",
+			"type": "string"
+		}
+	]
+}

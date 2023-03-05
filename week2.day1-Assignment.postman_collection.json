@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "d463f047-8c1c-4840-97db-052a2eef4249",
+		"name": "week2.day1-Assignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26039085"
+	},
+	"item": [
+		{
+			"name": "Create Incident",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code for Create incident is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Incident Prefix\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"INC\");\r",
+							"});\r",
+							"\r",
+							"var response = pm.response.json();\r",
+							"var sys_id=response.result.sys_id\r",
+							"var incNum=response.result.number\r",
+							"console.log(sys_id);\r",
+							"console.log(incNum);\r",
+							"pm.globals.set(\"systemID\", sys_id);\r",
+							"pm.collectionVariables.set(\"IncNumber\", incNum);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n    \"short_description\": \"{{short_description}}\",\r\n    \"description\": \"{{Description}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/api/now/table/{{Inc}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{Inc}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateIncident",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"short_description\": \"{{short_description}}\",\r\n    \"description\": \"{{Description}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/api/now/table/{{Inc}}/{{systemID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{Inc}}",
+						"{{systemID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Incident",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}/api/now/table/{{Inc}}/{{systemID}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{Inc}}",
+						"{{systemID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Response time is less than 2000ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Inc",
+			"value": "incident",
+			"type": "string"
+		},
+		{
+			"key": "IncNumber",
+			"value": "number",
+			"type": "string"
+		}
+	]
+}
